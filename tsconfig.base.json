@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@matszc/api-interfaces": ["libs/api-interfaces/src/index.ts"]
+      "@vc/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@vc/vc-form": ["libs/vc-form/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

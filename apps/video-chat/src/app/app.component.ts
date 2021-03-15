@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Message } from '@matszc/api-interfaces';
+import { Message } from '@vc/api-interfaces';
 
 @Component({
-  selector: 'matszc-root',
+  selector: 'vc-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })

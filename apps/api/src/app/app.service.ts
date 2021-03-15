@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Message } from '@matszc/api-interfaces';
+import { Message } from '@vc/api-interfaces';
 
 @Injectable()
 export class AppService {

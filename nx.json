@@ -1,40 +1,26 @@
 {
   "implicitDependencies": {
     "angular.json": "*",
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
     "tsconfig.base.json": "*",
     "tslint.json": "*",
     ".eslintrc.json": "*",
     "nx.json": "*"
   },
-  "affected": {
-    "defaultBase": "master"
-  },
-  "npmScope": "matszc",
+  "affected": { "defaultBase": "master" },
+  "npmScope": "vc",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
-      "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
-      }
+      "options": { "cacheableOperations": ["build", "lint", "test", "e2e"] }
     }
   },
   "projects": {
-    "video-chat": {
-      "tags": []
-    },
-    "video-chat-e2e": {
-      "tags": [],
-      "implicitDependencies": ["video-chat"]
-    },
-    "api": {
-      "tags": []
-    },
-    "api-interfaces": {
-      "tags": []
-    }
+    "video-chat": { "tags": [] },
+    "video-chat-e2e": { "tags": [], "implicitDependencies": ["video-chat"] },
+    "api": { "tags": [] },
+    "api-interfaces": { "tags": [] },
+    "chat-api": { "tags": [] },
+    "vc-form": { "tags": [] }
   }
 }
