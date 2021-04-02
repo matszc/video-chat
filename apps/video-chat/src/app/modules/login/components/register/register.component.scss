@@ -1,0 +1,20 @@
+@import "../../../../../styles/palette";
+
+.login-page {
+  min-width: 100vw;
+  min-height: calc(100vh - 58px);
+
+  .form-container {
+    display: flex;
+    height: 400px;
+    padding: 20px;
+    background: $surface-200;
+    -webkit-box-shadow: 5px 5px 10px 5px $surface-700;
+    box-shadow: 5px 5px 10px 5px $surface-700;
+
+    .form {
+      justify-self: center;
+      align-self: center;
+    }
+  }
+}

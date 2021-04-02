@@ -1,0 +1,7 @@
+<form class='p-flex p-flex-column' [formGroup]='formGroup' (ngSubmit)='submit()' (keyup.enter)='submit()'>
+  <ng-container *ngFor='let field of formConfig.fields'>
+    <div class='field-wrapper'>
+      <ng-container vcField [config]='field' [control]='getControl(field.name)'></ng-container>
+    </div>
+  </ng-container>
+</form>

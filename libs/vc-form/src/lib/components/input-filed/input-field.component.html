@@ -1,0 +1,17 @@
+<div class='p-field p-d-flex p-flex-column'>
+  <span class='p-input'
+        [ngClass]="{'p-input-icon-right': field.iconRight, 'p-input-icon-left': field.iconLeft, '.p-float-label': field.label}">
+
+      <i *ngIf='field.iconLeft' class='pi' [ngClass]='[field.iconLeft]'></i>
+
+    <input [id]='field.name' [type]='getType(field.type)' pInputText vcInputSize [formControl]='control'
+           class='p-inputtext'
+           [ngClass]="{'ng-dirty ng-invalid': control.invalid && control.touched}"
+           [placeholder]='field.placeholder'>
+    <label *ngIf='field.label' [for]='field.name'></label>
+      <i *ngIf='field.iconRight' class='pi' [ngClass]='[field.iconRight]'></i>
+  </span>
+  <ng-container *ngFor='let err of field.errors | map | keyvalue'>
+    <small *ngIf='hasError(err.key)' class="p-error">{{err.value}}</small>
+  </ng-container>
+</div>
