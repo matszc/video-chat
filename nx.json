@@ -21,6 +21,9 @@
     "api": { "tags": [] },
     "api-interfaces": { "tags": [] },
     "chat-api": { "tags": [] },
-    "vc-form": { "tags": [] }
+    "vc-form": { "tags": [] },
+    "vc-common": { "tags": [] },
+    "auth-api": { "tags": [] },
+    "users-api": { "tags": [] }
   }
 }

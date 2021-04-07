@@ -43,13 +43,19 @@
           "options": {
             "commands": [
               {
-                "command": "ng serve api"
+                "command": "nx run api:serve"
               },
               {
-                "command": "ng serve video-chat"
+                "command": "nx run video-chat:serve"
               },
               {
-                "command": "ng serve chat-api"
+                "command": "nx run chat-api:serve"
+              },
+              {
+                "command": "nx run users-api:serve"
+              },
+              {
+                "command": "nx run auth-api:serve"
               }
             ],
             "parallel": true
@@ -63,12 +69,15 @@
             "main": "apps/video-chat/src/main.ts",
             "polyfills": "apps/video-chat/src/polyfills.ts",
             "tsConfig": "apps/video-chat/tsconfig.app.json",
+            "maxWorkers": 1,
+            "memoryLimit": 1024,
             "aot": true,
             "assets": [
               "apps/video-chat/src/favicon.ico",
               "apps/video-chat/src/assets"
             ],
-            "styles": ["apps/video-chat/src/styles.scss",
+            "styles": [
+              "apps/video-chat/src/styles.scss",
               "node_modules/primeng/resources/themes/saga-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
@@ -182,7 +191,9 @@
             "outputPath": "dist/apps/api",
             "main": "apps/api/src/main.ts",
             "tsConfig": "apps/api/tsconfig.app.json",
-            "assets": ["apps/api/src/assets"]
+            "assets": ["apps/api/src/assets"],
+            "maxWorkers": 1,
+            "memoryLimit": 1024
           },
           "configurations": {
             "production": {
@@ -228,7 +239,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/api-interfaces/**/*.ts"]
+            "lintFilePatterns": ["libs/api-interfaces/**/*.ts"],
+            "maxWorkers": 1,
+            "memoryLimit": 1024
           }
         }
       }
@@ -304,6 +317,135 @@
           "outputs": ["coverage/libs/vc-form"],
           "options": {
             "jestConfig": "libs/vc-form/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "vc-common": {
+      "root": "libs/vc-common",
+      "sourceRoot": "libs/vc-common/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/vc-common/**/*.ts"],
+            "maxWorkers": 1,
+            "memoryLimit": 1024
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/vc-common"],
+          "options": {
+            "jestConfig": "libs/vc-common/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "auth-api": {
+      "root": "apps/auth-api",
+      "sourceRoot": "apps/auth-api/src",
+      "projectType": "application",
+      "prefix": "auth-api",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/auth-api",
+            "main": "apps/auth-api/src/main.ts",
+            "tsConfig": "apps/auth-api/tsconfig.app.json",
+            "assets": ["apps/auth-api/src/assets"],
+            "maxWorkers": 1,
+            "memoryLimit": 1024
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/auth-api/src/environments/environment.ts",
+                  "with": "apps/auth-api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "auth-api:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/auth-api/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/auth-api"],
+          "options": {
+            "jestConfig": "apps/auth-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "users-api": {
+      "root": "apps/users-api",
+      "sourceRoot": "apps/users-api/src",
+      "projectType": "application",
+      "prefix": "users-api",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/users-api",
+            "main": "apps/users-api/src/main.ts",
+            "tsConfig": "apps/users-api/tsconfig.app.json",
+            "assets": ["apps/users-api/src/assets"],
+            "maxWorkers": 1,
+            "memoryLimit": 1024
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/users-api/src/environments/environment.ts",
+                  "with": "apps/users-api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "users-api:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/users-api/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/users-api"],
+          "options": {
+            "jestConfig": "apps/users-api/jest.config.js",
             "passWithNoTests": true
           }
         }

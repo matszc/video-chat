@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@vc/api-interfaces": ["libs/api-interfaces/src/index.ts"],
-      "@vc/vc-form": ["libs/vc-form/src/index.ts"]
+      "@vc/vc-form": ["libs/vc-form/src/index.ts"],
+      "@vc/vc-common": ["libs/vc-common/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -26,8 +26,8 @@
             "objectDestructuring": false,
             "parameter": true,
             "propertyDeclaration": true,
-            "variableDeclaration": true,
-            "variableDeclarationIgnoreFunction": true
+            "variableDeclaration": false,
+            "variableDeclarationIgnoreFunction": false
           }
         ]
       }
