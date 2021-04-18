@@ -1,14 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { LayoutContainerEntity } from './layout-container.models';
+import { LoginUserResponseModel } from '../../../../../../../libs/api-interfaces/src/lib/user/login-user-response.model';
 
-export const init = createAction('[LayoutContainer Page] Init');
-
-export const loadLayoutContainerSuccess = createAction(
-  '[LayoutContainer/API] Load LayoutContainer Success',
-  props<{ layoutContainer: LayoutContainerEntity[] }>()
-);
-
-export const loadLayoutContainerFailure = createAction(
-  '[LayoutContainer/API] Load LayoutContainer Failure',
-  props<{ error: any }>()
-);
+export const saveToken = createAction('[LayoutContainer] Save Token',
+  props<{payload: LoginUserResponseModel}>()
+)

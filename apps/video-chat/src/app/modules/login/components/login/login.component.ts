@@ -10,6 +10,8 @@ import {
   ButtonModel,
   ButtonTypeEnum
 } from '../../../../../../../../libs/vc-form/src/lib/fields-models/button.model';
+import { LoginUserModel } from '../../../../../../../../libs/api-interfaces/src/lib/user/login-user.model';
+import { LoginFacade } from '../../+state/login.facade';
 
 @Component({
   selector: 'vc-login',
@@ -20,21 +22,24 @@ export class LoginComponent implements OnInit {
 
   formModel: FormModel
 
-  constructor() { }
+  constructor(
+    private loginFacade: LoginFacade
+  ) { }
 
   ngOnInit(): void {
     this.loadForm();
   }
 
-  submitted(v: any): void {
-    console.log(v);
+  submitted(v: LoginUserModel): void {
+    v.rememberUser = true; //TODO implement remember user option
+    this.loginFacade.login(v);
   }
 
   private loadForm(): void {
     this.formModel = {
       fields: [
         new InputFieldModel({
-          name: 'login',
+          name: 'loginOrEmail',
           type: InputFieldType.Text,
           validators: [Validators.required],
           errors: {

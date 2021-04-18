@@ -11,6 +11,9 @@ import {
   ButtonModel,
   ButtonTypeEnum
 } from '../../../../../../../../libs/vc-form/src/lib/fields-models/button.model';
+import { LoginFacade } from '../../+state/login.facade';
+import { RegisterFormModel } from '../../models/register-form.model';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'vc-register',
@@ -21,14 +24,16 @@ export class RegisterComponent implements OnInit {
 
   formModel: FormModel
 
-  constructor() { }
+  constructor(
+    private loginFacade: LoginFacade,
+  ) { }
 
   ngOnInit(): void {
     this.loadForm();
   }
 
-  submitted(v: any): void {
-
+  submitted(form: RegisterFormModel): void {
+    this.loginFacade.register(form);
   }
 
   private loadForm(): void {

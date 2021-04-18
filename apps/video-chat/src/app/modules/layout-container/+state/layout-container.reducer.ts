@@ -7,9 +7,9 @@ import { LayoutContainerEntity } from './layout-container.models';
 export const LAYOUTCONTAINER_FEATURE_KEY = 'layoutContainer';
 
 export interface State extends EntityState<LayoutContainerEntity> {
-  selectedId?: string | number; // which LayoutContainer record has been selected
-  loaded: boolean; // has the LayoutContainer list been loaded
-  error?: string | null; // last known error (if any)
+  token: string,
+  refreshToken: string,
+  loaded: boolean
 }
 
 export interface LayoutContainerPartialState {
@@ -19,26 +19,15 @@ export interface LayoutContainerPartialState {
 export const layoutContainerAdapter: EntityAdapter<LayoutContainerEntity> = createEntityAdapter<LayoutContainerEntity>();
 
 export const initialState: State = layoutContainerAdapter.getInitialState({
-  // set initial required properties
+  token: undefined,
+  refreshToken: undefined,
   loaded: false,
 });
 
 const layoutContainerReducer = createReducer(
   initialState,
-  on(LayoutContainerActions.init, (state) => ({
-    ...state,
-    loaded: false,
-    error: null,
-  })),
-  on(
-    LayoutContainerActions.loadLayoutContainerSuccess,
-    (state, { layoutContainer }) =>
-      layoutContainerAdapter.setAll(layoutContainer, { ...state, loaded: true })
-  ),
-  on(LayoutContainerActions.loadLayoutContainerFailure, (state, { error }) => ({
-    ...state,
-    error,
-  }))
+  on(LayoutContainerActions.saveToken,
+    (state, {payload}) => ({...state, loaded: true, token: payload.token, refreshToken: payload.refresh}))
 );
 
 export function reducer(state: State | undefined, action: Action) {

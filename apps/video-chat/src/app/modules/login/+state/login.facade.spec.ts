@@ -7,31 +7,31 @@ import { StoreModule, Store } from '@ngrx/store';
 
 import { NxModule } from '@nrwl/angular';
 
-import { LayoutContainerEntity } from './layout-container.models';
-import { LayoutContainerEffects } from './layout-container.effects';
-import { LayoutContainerFacade } from './layout-container.facade';
+import { LoginEntity } from './login.models';
+import { LoginEffects } from './login.effects';
+import { LoginFacade } from './login.facade';
 
-import * as LayoutContainerSelectors from './layout-container.selectors';
-import * as LayoutContainerActions from './layout-container.actions';
+import * as LoginSelectors from './login.selectors';
+import * as LoginActions from './login.actions';
 import {
-  LAYOUTCONTAINER_FEATURE_KEY,
+  LOGIN_FEATURE_KEY,
   State,
   initialState,
   reducer,
-} from './layout-container.reducer';
+} from './login.reducer';
 
 interface TestSchema {
-  layoutContainer: State;
+  login: State;
 }
 
-describe('LayoutContainerFacade', () => {
-  let facade: LayoutContainerFacade;
+describe('LoginFacade', () => {
+  let facade: LoginFacade;
   let store: Store<TestSchema>;
-  const createLayoutContainerEntity = (id: string, name = '') =>
+  const createLoginEntity = (id: string, name = '') =>
     ({
       id,
       name: name || `name-${id}`,
-    } as LayoutContainerEntity);
+    } as LoginEntity);
 
   beforeEach(() => {});
 
@@ -39,10 +39,10 @@ describe('LayoutContainerFacade', () => {
     beforeEach(() => {
       @NgModule({
         imports: [
-          StoreModule.forFeature(LAYOUTCONTAINER_FEATURE_KEY, reducer),
-          EffectsModule.forFeature([LayoutContainerEffects]),
+          StoreModule.forFeature(LOGIN_FEATURE_KEY, reducer),
+          EffectsModule.forFeature([LoginEffects]),
         ],
-        providers: [LayoutContainerFacade],
+        providers: [LoginFacade],
       })
       class CustomFeatureModule {}
 
@@ -58,7 +58,7 @@ describe('LayoutContainerFacade', () => {
       TestBed.configureTestingModule({ imports: [RootModule] });
 
       store = TestBed.inject(Store);
-      facade = TestBed.inject(LayoutContainerFacade);
+      facade = TestBed.inject(LoginFacade);
     });
 
     /**
@@ -66,7 +66,7 @@ describe('LayoutContainerFacade', () => {
      */
     it('loadAll() should return empty list with loaded == true', async (done) => {
       try {
-        let list = await readFirst(facade.allLayoutContainer$);
+        let list = await readFirst(facade.allLogin$);
         let isLoaded = await readFirst(facade.loaded$);
 
         expect(list.length).toBe(0);
@@ -74,7 +74,7 @@ describe('LayoutContainerFacade', () => {
 
         facade.init();
 
-        list = await readFirst(facade.allLayoutContainer$);
+        list = await readFirst(facade.allLogin$);
         isLoaded = await readFirst(facade.loaded$);
 
         expect(list.length).toBe(0);
@@ -87,26 +87,23 @@ describe('LayoutContainerFacade', () => {
     });
 
     /**
-     * Use `loadLayoutContainerSuccess` to manually update list
+     * Use `loadLoginSuccess` to manually update list
      */
-    it('allLayoutContainer$ should return the loaded list; and loaded flag == true', async (done) => {
+    it('allLogin$ should return the loaded list; and loaded flag == true', async (done) => {
       try {
-        let list = await readFirst(facade.allLayoutContainer$);
+        let list = await readFirst(facade.allLogin$);
         let isLoaded = await readFirst(facade.loaded$);
 
         expect(list.length).toBe(0);
         expect(isLoaded).toBe(false);
 
         store.dispatch(
-          LayoutContainerActions.loadLayoutContainerSuccess({
-            layoutContainer: [
-              createLayoutContainerEntity('AAA'),
-              createLayoutContainerEntity('BBB'),
-            ],
+          LoginActions.loadLoginSuccess({
+            login: [createLoginEntity('AAA'), createLoginEntity('BBB')],
           })
         );
 
-        list = await readFirst(facade.allLayoutContainer$);
+        list = await readFirst(facade.allLogin$);
         isLoaded = await readFirst(facade.loaded$);
 
         expect(list.length).toBe(2);

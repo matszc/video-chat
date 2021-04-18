@@ -69,8 +69,6 @@
             "main": "apps/video-chat/src/main.ts",
             "polyfills": "apps/video-chat/src/polyfills.ts",
             "tsConfig": "apps/video-chat/tsconfig.app.json",
-            "maxWorkers": 1,
-            "memoryLimit": 1024,
             "aot": true,
             "assets": [
               "apps/video-chat/src/favicon.ico",
@@ -239,9 +237,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/api-interfaces/**/*.ts"],
-            "maxWorkers": 1,
-            "memoryLimit": 1024
+            "lintFilePatterns": ["libs/api-interfaces/**/*.ts"]
           }
         }
       }
@@ -330,9 +326,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/vc-common/**/*.ts"],
-            "maxWorkers": 1,
-            "memoryLimit": 1024
+            "lintFilePatterns": ["libs/vc-common/**/*.ts"]
           }
         },
         "test": {

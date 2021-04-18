@@ -5,7 +5,8 @@ import { LayoutContainerComponent } from './components/layout-container/layout-c
 const routes: Routes = [
   {path: '', component: LayoutContainerComponent, children: [
       {path: '', pathMatch: 'full', redirectTo: 'auth'},
-      {path: 'auth', loadChildren: () => import('../login/login.module').then(m => m.LoginModule)}
+      {path: 'auth', loadChildren: () => import('../login/login.module').then(m => m.LoginModule)},
+      {path: 'room-list', loadChildren: () => import('../room-list/room-list.module').then(m => m.RoomListModule)}
     ]}
 ];
 

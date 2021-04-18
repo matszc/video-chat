@@ -1,11 +1,11 @@
-import { Body, Controller, HttpCode, Inject, Post, Res } from '@nestjs/common';
+import { Body, Controller, HttpCode, Inject, Post, Req, Res } from '@nestjs/common';
 import { CreateUserDto } from '../../../../../users-api/src/app/users/dto/create-user.dto';
 import { ClientProxy } from '@nestjs/microservices';
 import { LoginUserResponseModel } from '../../../../../../libs/api-interfaces/src/lib/user/login-user-response.model';
 import { LoginUserModel } from '../../../../../../libs/api-interfaces/src/lib/user/login-user.model';
 import { RefreshTokenDto } from '../../../../../auth-api/src/app/dto/refresh-token.dto';
 import * as moment from 'moment';
-import Response from 'express';
+import { Response, Request } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -29,9 +29,11 @@ export class UsersController {
     return payload;
   }
 
-  @Post('refreshToken')
+  @Post('tryRefreshToken')
   @HttpCode(200)
-  async refreshToken(@Body() data: RefreshTokenDto, @Res({passthrough: true}) response: Response): Promise<LoginUserResponseModel> {
+  async refreshToken(@Body() data: RefreshTokenDto,@Req() request: Request, @Res({passthrough: true}) response: Response): Promise<LoginUserResponseModel> {
+    console.log(request.cookies);
+    console.log(request.signedCookies);
     const payload = await this.client.send<LoginUserResponseModel, RefreshTokenDto>('refreshToken', data).toPromise();
     this.setTokenCookie(response, payload.token);
     return payload;
