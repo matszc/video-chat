@@ -28,3 +28,8 @@ export const getLayoutContainerEntities = createSelector(
   getLayoutContainerState,
   (state: State) => selectEntities(state)
 );
+
+export const getToken = createSelector(
+  getLayoutContainerState,
+  (state: State) => state.token
+)

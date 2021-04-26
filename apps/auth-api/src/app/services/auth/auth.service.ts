@@ -8,8 +8,8 @@ import { JwtService } from '@nestjs/jwt';
 import {Response} from 'express';
 import * as bcrypt from 'bcrypt';
 import { ClientProxy } from '@nestjs/microservices';
-import { refreshSecret } from '../../settings';
 import { UserDocument } from '../../../../../users-api/src/app/users/schemas/user.schema';
+import { refreshSecret } from '../../settings';
 
 @Injectable()
 export class AuthService {
@@ -40,6 +40,12 @@ export class AuthService {
   }
 
   async refreshToken(token: string): Promise<LoginUserResponseModel> {
+    if(token == null || !await this.jwtService.verifyAsync(token, {secret: refreshSecret})) {
+      return {
+        token: null,
+        refresh: null
+      }
+    }
     const tokenParsed: RefreshTokenPayloadModel = this.jwtService.decode(token) as RefreshTokenPayloadModel;
     const user = await this.client.send<UserDocument, string>('findOneUserById', tokenParsed.id).toPromise();
 
@@ -68,7 +74,7 @@ export class AuthService {
 
   private async getRefreshToken(user: UserDocument, rememberUser: boolean): Promise<string> {
     const payload: RefreshTokenPayloadModel = {id: user._id, rememberUser}
-    return await this.jwtService.signAsync(payload, {secret: refreshSecret, expiresIn: rememberUser? '48h': '1h'});
+    return await this.jwtService.signAsync(payload, {expiresIn: rememberUser? '48h': '1h', secret: refreshSecret});
   }
 
 }

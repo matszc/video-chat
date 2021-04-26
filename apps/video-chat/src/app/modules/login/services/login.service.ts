@@ -20,6 +20,6 @@ export class LoginService {
   }
 
   login(payload: LoginUserModel): Observable<LoginUserResponseModel> {
-    return this.http.post<LoginUserResponseModel>(`${environment.api}/users/login`, payload);
+    return this.http.post<LoginUserResponseModel>(`${environment.api}/users/login`, payload, {withCredentials: true});
   }
 }

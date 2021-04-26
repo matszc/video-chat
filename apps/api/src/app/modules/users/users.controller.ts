@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Inject, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Inject, Post, Req, Res } from '@nestjs/common';
 import { CreateUserDto } from '../../../../../users-api/src/app/users/dto/create-user.dto';
 import { ClientProxy } from '@nestjs/microservices';
 import { LoginUserResponseModel } from '../../../../../../libs/api-interfaces/src/lib/user/login-user-response.model';
@@ -6,6 +6,7 @@ import { LoginUserModel } from '../../../../../../libs/api-interfaces/src/lib/us
 import { RefreshTokenDto } from '../../../../../auth-api/src/app/dto/refresh-token.dto';
 import * as moment from 'moment';
 import { Response, Request } from 'express';
+import { environment } from '../../../environments/environment';
 
 @Controller('users')
 export class UsersController {
@@ -23,28 +24,40 @@ export class UsersController {
 
   @Post('login')
   @HttpCode(200)
-  async loginUser(@Body() user: LoginUserModel, @Res({passthrough: true}) response: Response): Promise<LoginUserResponseModel> {
+  async loginUser(@Body() user: LoginUserModel, @Res({ passthrough: true }) response: Response): Promise<LoginUserResponseModel> {
     const payload = await this.client.send<LoginUserResponseModel, LoginUserModel>('loginUser', user).toPromise();
-    this.setTokenCookie(response, payload.token);
+    this.setTokenCookie(response, payload.token, 'token');
+    this.setTokenCookie(response, payload.refresh, 'refreshToken');
+
     return payload;
   }
 
-  @Post('tryRefreshToken')
+  @Get('tryRefreshToken')
   @HttpCode(200)
-  async refreshToken(@Body() data: RefreshTokenDto,@Req() request: Request, @Res({passthrough: true}) response: Response): Promise<LoginUserResponseModel> {
-    console.log(request.cookies);
-    console.log(request.signedCookies);
-    const payload = await this.client.send<LoginUserResponseModel, RefreshTokenDto>('refreshToken', data).toPromise();
-    this.setTokenCookie(response, payload.token);
-    return payload;
+  async refreshToken(@Body() data: RefreshTokenDto, @Req() request: Request, @Res({ passthrough: true }) response: Response): Promise<LoginUserResponseModel> {
+    const {token, refresh} = await this.client.send<LoginUserResponseModel, RefreshTokenDto>('refreshToken',
+      {refreshToken: request.cookies.refreshToken}).toPromise();
+
+    if(token && refresh) {
+      this.setTokenCookie(response, token, 'token');
+      this.setTokenCookie(response, refresh, 'refreshToken');
+    }
+    return {refresh, token};
   }
 
-  private setTokenCookie(res: Response, token: string): void {
+  @Get('logout')
+  @HttpCode(200)
+  async logout(@Res({ passthrough: true }) response: Response): Promise<void> {
+    response.clearCookie('Authorization');
+    response.clearCookie('refreshToken');
+  }
+
+  private setTokenCookie(res: Response, token: string, name: string): void {
     const expires = moment().add(7, 'days').toDate();
 
-    res.cookie('token', token, {
+    res.cookie(name, token, {
       httpOnly: true,
-      expires
+      expires,
     });
   }
 

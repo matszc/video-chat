@@ -9,6 +9,8 @@ import { LayoutContainerEffects } from './+state/layout-container.effects';
 import { LayoutContainerFacade } from './+state/layout-container.facade';
 import { LayoutContainerComponent } from './components/layout-container/layout-container.component';
 import { MenubarModule } from 'primeng/menubar';
+import { AuthGuard } from './guards/auth.guard';
+import { UnAuthGuard } from './guards/un-auth.guard';
 
 @NgModule({
   declarations: [LayoutContainerComponent],
@@ -22,6 +24,6 @@ import { MenubarModule } from 'primeng/menubar';
     EffectsModule.forFeature([LayoutContainerEffects]),
     MenubarModule
   ],
-  providers: [LayoutContainerFacade],
+  providers: [LayoutContainerFacade, AuthGuard, UnAuthGuard],
 })
 export class LayoutContainerModule {}

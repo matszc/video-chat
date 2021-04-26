@@ -21,13 +21,16 @@ export const layoutContainerAdapter: EntityAdapter<LayoutContainerEntity> = crea
 export const initialState: State = layoutContainerAdapter.getInitialState({
   token: undefined,
   refreshToken: undefined,
-  loaded: false,
+  loaded: undefined,
 });
 
 const layoutContainerReducer = createReducer(
   initialState,
   on(LayoutContainerActions.saveToken,
-    (state, {payload}) => ({...state, loaded: true, token: payload.token, refreshToken: payload.refresh}))
+    (state, {payload}) => ({...state, loaded: payload.token != null, token: payload.token, refreshToken: payload.refresh})),
+  on(LayoutContainerActions.logoutSuccess,
+    (state) => ({...state, loaded: false, token: undefined, refreshToken: undefined})),
+  on(LayoutContainerActions.saveTokenError,(state) => ({...state, loaded: false}))
 );
 
 export function reducer(state: State | undefined, action: Action) {

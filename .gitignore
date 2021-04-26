@@ -40,4 +40,4 @@ Thumbs.db
 
 # files
 /apps/users-api/src/db_connection.ts
-/apps/auth-api/src/app/settings.ts
+/libs/vc-common/src/lib/vc-jwt/settings.ts
