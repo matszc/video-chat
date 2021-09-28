@@ -444,6 +444,57 @@
           }
         }
       }
+    },
+    "room-api": {
+      "root": "apps/room-api",
+      "sourceRoot": "apps/room-api/src",
+      "projectType": "application",
+      "prefix": "room-api",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/room-api",
+            "main": "apps/room-api/src/main.ts",
+            "tsConfig": "apps/room-api/tsconfig.app.json",
+            "assets": ["apps/room-api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/room-api/src/environments/environment.ts",
+                  "with": "apps/room-api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "room-api:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/room-api/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/room-api"],
+          "options": {
+            "jestConfig": "apps/room-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

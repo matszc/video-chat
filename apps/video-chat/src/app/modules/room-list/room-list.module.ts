@@ -8,9 +8,11 @@ import { EffectsModule } from '@ngrx/effects';
 import * as fromRoomList from './+state/room-list.reducer';
 import { RoomListEffects } from './+state/room-list.effects';
 import { RoomListFacade } from './+state/room-list.facade';
+import { RoomComponent } from './components/room/room.component';
+import { RoomResolver } from './resolvers/room.resolver';
 
 @NgModule({
-  declarations: [ListComponent],
+  declarations: [ListComponent, RoomComponent],
   imports: [
     CommonModule,
     RoomListRoutingModule,
@@ -20,6 +22,6 @@ import { RoomListFacade } from './+state/room-list.facade';
     ),
     EffectsModule.forFeature([RoomListEffects]),
   ],
-  providers: [RoomListFacade],
+  providers: [RoomListFacade, RoomResolver],
 })
 export class RoomListModule {}

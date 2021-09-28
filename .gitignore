@@ -40,4 +40,5 @@ Thumbs.db
 
 # files
 /apps/users-api/src/db_connection.ts
+/apps/room-api/src/db_connection.ts
 /libs/vc-common/src/lib/vc-jwt/settings.ts

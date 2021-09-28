@@ -14,16 +14,6 @@ export const getRoomListState = createFeatureSelector<
 
 const { selectAll, selectEntities } = roomListAdapter.getSelectors();
 
-export const getRoomListLoaded = createSelector(
-  getRoomListState,
-  (state: State) => state.loaded
-);
-
-export const getRoomListError = createSelector(
-  getRoomListState,
-  (state: State) => state.error
-);
-
 export const getAllRoomList = createSelector(getRoomListState, (state: State) =>
   selectAll(state)
 );
@@ -33,13 +23,12 @@ export const getRoomListEntities = createSelector(
   (state: State) => selectEntities(state)
 );
 
-export const getSelectedId = createSelector(
+export const getCreatedRoomId = createSelector(
   getRoomListState,
-  (state: State) => state.selectedId
-);
+  (state: State) => state.createdRoomId
+)
 
-export const getSelected = createSelector(
-  getRoomListEntities,
-  getSelectedId,
-  (entities, selectedId) => selectedId && entities[selectedId]
-);
+export const getRoom = createSelector(
+  getRoomListState,
+  (state: State) => state.room
+)

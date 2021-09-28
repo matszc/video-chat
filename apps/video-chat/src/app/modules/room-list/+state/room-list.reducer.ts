@@ -3,13 +3,13 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
 import * as RoomListActions from './room-list.actions';
 import { RoomListEntity } from './room-list.models';
+import { GetRoomModel } from '../../../../../../../libs/api-interfaces/src/lib/room/get-room.model';
 
 export const ROOMLIST_FEATURE_KEY = 'roomList';
 
 export interface State extends EntityState<RoomListEntity> {
-  selectedId?: string | number; // which RoomList record has been selected
-  loaded: boolean; // has the RoomList list been loaded
-  error?: string | null; // last known error (if any)
+  createdRoomId: string;
+  room: GetRoomModel
 }
 
 export interface RoomListPartialState {
@@ -19,24 +19,15 @@ export interface RoomListPartialState {
 export const roomListAdapter: EntityAdapter<RoomListEntity> = createEntityAdapter<RoomListEntity>();
 
 export const initialState: State = roomListAdapter.getInitialState({
-  // set initial required properties
-  loaded: false,
+  createdRoomId: null,
+  room: null
 });
 
 const roomListReducer = createReducer(
   initialState,
-  on(RoomListActions.init, (state) => ({
-    ...state,
-    loaded: false,
-    error: null,
-  })),
-  on(RoomListActions.loadRoomListSuccess, (state, { roomList }) =>
-    roomListAdapter.setAll(roomList, { ...state, loaded: true })
-  ),
-  on(RoomListActions.loadRoomListFailure, (state, { error }) => ({
-    ...state,
-    error,
-  }))
+  on(RoomListActions.createRoomSuccess, (state, {room}) => ({...state, createdRoomId: room.guid})),
+  on(RoomListActions.getRoomSuccess, (state, {room}) => ({...state, room}))
+
 );
 
 export function reducer(state: State | undefined, action: Action) {

@@ -4,25 +4,53 @@ import { fetch } from '@nrwl/angular';
 
 import * as RoomListFeature from './room-list.reducer';
 import * as RoomListActions from './room-list.actions';
+import { RoomService } from '../services/room.service';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class RoomListEffects {
-  init$ = createEffect(() =>
+  createRoom$: any = createEffect(() =>
     this.actions$.pipe(
-      ofType(RoomListActions.init),
+      ofType(RoomListActions.createRoom),
       fetch({
         run: (action) => {
-          // Your custom service 'load' logic goes here. For now just return a success action...
-          return RoomListActions.loadRoomListSuccess({ roomList: [] });
+          return this.roomService.createRoom().pipe(
+            map(r => {
+              return RoomListActions.createRoomSuccess({room: r})
+            })
+          )
         },
 
         onError: (action, error) => {
           console.error('Error', error);
-          return RoomListActions.loadRoomListFailure({ error });
+          return RoomListActions.createRoomError({ error });
         },
       })
     )
   );
 
-  constructor(private actions$: Actions) {}
+  getRoom$: any = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RoomListActions.getRoom),
+      fetch({
+        run: (action) => {
+          return this.roomService.getRoom(action.id).pipe(
+            map(r => {
+              return RoomListActions.getRoomSuccess({room: r})
+            })
+          )
+        },
+
+        onError: (action, error) => {
+          console.error('Error', error);
+          return RoomListActions.getRoomError({ error });
+        },
+      })
+    )
+  );
+
+  constructor(
+    private actions$: Actions,
+    private roomService: RoomService
+  ) {}
 }

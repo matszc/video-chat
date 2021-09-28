@@ -7,5 +7,6 @@ module.exports = {
     '<rootDir>/libs/vc-common',
     '<rootDir>/apps/auth-api',
     '<rootDir>/apps/users-api',
+    '<rootDir>/apps/room-api',
   ],
 };
